@@ -2,9 +2,8 @@
 exports.__esModule = true;
 exports.RequestResult = void 0;
 var RequestResult = /** @class */ (function () {
-    function RequestResult(data) {
+    function RequestResult() {
         this.success = true;
-        this.data = data;
     }
     RequestResult.prototype.setMsg = function (msg) {
         this.msg = msg;

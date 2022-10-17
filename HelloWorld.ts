@@ -5,9 +5,10 @@ import { DataSource } from "./config/DataSource";
 import { DBUtil } from "./utils/DBUtil";
 import { EmailUtil } from "./utils/EmailUtil";
 export class Test {
-    testQuery(): void {
+    testQuery(): RequestResult<Order[]> {
         const sql: string = 'SELECT * from t_order'
-        let reqResult: any = DBUtil.doExec(sql, function (error, results, fields) {
+        let reqResult: RequestResult<Order[]> = new RequestResult();
+        DBUtil.doExec(sql, function (error, results, fields) {
             if (error) throw error;
             let orders: Order[] = []
             for (const item in results) {
@@ -17,9 +18,34 @@ export class Test {
                     orders.push(order)
                 }
             }
-            return new RequestResult<Order[]>(orders)
+            reqResult.setData(orders)
         });
         console.log(reqResult)
+        return reqResult
+    }
+
+    async testQueryAsync(): Promise<RequestResult<Order[]>> {
+        let reqResult: RequestResult<Order[]> = new RequestResult()
+        let orders: Order[] = []
+        const sql: string = 'SELECT * from t_order'
+        let promise = new Promise((res, rej) => {
+            DBUtil.doExec(sql, (error, results) => {
+                if (error) {
+                    return rej(error)
+                }
+                return res(results)
+            })
+        })
+
+        await promise.then((results: any) => {
+            for (const item in results) {
+                const element = results[item];
+                let order: Order = new Order(element.order_id, element.order_content)
+                orders.push(order)
+            }
+            reqResult.setData(orders)
+        })
+        return reqResult
     }
 
     testSendEmail(): void {
@@ -28,12 +54,17 @@ export class Test {
 }
 
 // unit test
-it('method testQuery test', () => {
-    let test: Test = new Test()
-    test.testQuery
-    test.testSendEmail
-})
+// it('method testQuery test', () => {
+//     let test: Test = new Test()
+//     test.testQuery
+//     test.testSendEmail
+// })
 
+let test: Test = new Test()
+console.log("aaa")
+test.testQuery
+let asyncValue = test.testQueryAsync()
+console.log(asyncValue)
 
 
 // const insertSql = 'insert into t_order(order_content) values(?)';

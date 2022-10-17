@@ -2,6 +2,7 @@
 exports.__esModule = true;
 exports.EmailUtil = void 0;
 var nodemailer = require("nodemailer");
+var SymbolConstants_1 = require("../common/SymbolConstants");
 var EmailUtil = /** @class */ (function () {
     function EmailUtil() {
     }
@@ -20,7 +21,7 @@ var EmailUtil = /** @class */ (function () {
         var mail = {
             from: EmailUtil.sender,
             to: receiver,
-            html: '<div>' + content + '</div>',
+            html: SymbolConstants_1.SymbolConstants.leftDiv + content + SymbolConstants_1.SymbolConstants.rightDiv,
             subject: title
         };
         //回调函数

@@ -4,8 +4,8 @@ export class RequestResult<T> {
     success: boolean = true
     errCode: string
     errMsg: string
-    constructor(data: T) {
-        this.data = data
+    constructor() {
+        
     }
     setMsg(msg: string): void {
         this.msg = msg
