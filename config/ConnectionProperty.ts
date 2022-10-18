@@ -1,11 +1,13 @@
 export class ConnectionProperty {
     host: string
+    port: number
     user: string
     password: string
     database: string
-    constructor(host: string, user: string, 
+    constructor(host: string, port: number, user: string, 
             password: string, database: string) {
         this.host = host             
+        this.port = port             
         this.user = user             
         this.password = password             
         this.database = database             

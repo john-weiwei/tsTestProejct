@@ -7,7 +7,7 @@ var DataSource = /** @class */ (function () {
     function DataSource() {
     }
     DataSource.prototype.createConn = function () {
-        return mysql.createConnection(new ConnectionProperty_1.ConnectionProperty('localhost', 'root', 'root', 'enjoydb'));
+        return mysql.createConnection(new ConnectionProperty_1.ConnectionProperty('localhost', 3306, 'root', 'root', 'enjoydb'));
     };
     return DataSource;
 }());

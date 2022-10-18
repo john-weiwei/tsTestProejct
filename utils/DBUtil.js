@@ -7,7 +7,7 @@ var DBUtil = /** @class */ (function () {
     function DBUtil() {
     }
     DBUtil.createConn = function () {
-        return mysql.createConnection(new ConnectionProperty_1.ConnectionProperty(this.host, this.userName, this.password, this.dbName));
+        return mysql.createConnection(new ConnectionProperty_1.ConnectionProperty(this.host, this.port, this.userName, this.password, this.dbName));
     };
     DBUtil.doExec = function (sql, callback, values) {
         var conn = this.createConn();
@@ -22,10 +22,11 @@ var DBUtil = /** @class */ (function () {
             conn.destroy;
         }
     };
-    DBUtil.host = 'localhost';
+    DBUtil.host = '192.168.255.129';
+    DBUtil.port = 3312;
     DBUtil.userName = 'root';
-    DBUtil.password = 'root';
-    DBUtil.dbName = 'enjoydb';
+    DBUtil.password = '123456';
+    DBUtil.dbName = 'enjoy';
     return DBUtil;
 }());
 exports.DBUtil = DBUtil;
