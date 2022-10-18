@@ -1,5 +1,5 @@
 export class AddOrderForm {
-    content: string
+    content!: string
     constructor() {
 
     }

@@ -1,6 +1,6 @@
 export class UdpateOrderForm {
-    private orderId: number
-    private orderContent: string
+    private orderId!: number
+    private orderContent!: string
     constructor() {
 
     }

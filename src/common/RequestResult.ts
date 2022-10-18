@@ -1,9 +1,9 @@
 export class RequestResult<T> {
-    msg: string
-    data: T
+    msg!: string
+    data!: T
     success: boolean = true
-    errCode: string
-    errMsg: string
+    errCode!: string
+    errMsg!: string
     constructor() {
         
     }

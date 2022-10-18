@@ -2,8 +2,8 @@ import { describe, it } from "node:test";
 import { RequestResult } from "./common/RequestResult";
 import { Order } from "./entity/Order";
 import { DataSource } from "./config/DataSource";
-import { DBUtil } from "./utils/DBUtil";
-import { EmailUtil } from "./utils/EmailUtil";
+import { DBUtil } from "../src/utils/DBUtil";
+import { EmailUtil } from "../src/utils/EmailUtil";
 import { PageInfo } from "./common/PageInfo";
 import { AddOrderForm } from "./form/AddOrderForm";
 import { UdpateOrderForm } from "./form/UpdateOrderForm";
@@ -11,7 +11,7 @@ export class Test {
     testQuery(): RequestResult<Order[]> {
         const sql: string = 'SELECT * from t_order'
         let reqResult: RequestResult<Order[]> = new RequestResult();
-        DBUtil.doExec(sql, function (error, results, fields) {
+        DBUtil.doExec(sql, function (error: any, results: { [x: string]: any; }, fields: any) {
             if (error) throw error;
             let orders: Order[] = []
             for (const item in results) {
@@ -32,7 +32,7 @@ export class Test {
         let orders: Order[] = []
         const sql: string = 'SELECT * from t_order'
         let promise = new Promise((res, rej) => {
-            DBUtil.doExec(sql, (error, results) => {
+            DBUtil.doExec(sql, (error: any, results: unknown) => {
                 if (error) {
                     return rej(error)
                 }
@@ -57,7 +57,7 @@ export class Test {
         const sql: string = 'SELECT * from t_order limit ?,?'
         const params: any[] = [(page.currentPage - 1) * page.pageSize, page.pageSize]
         let promise = new Promise((res, rej) => {
-            DBUtil.doExec(sql, (error, results) => {
+            DBUtil.doExec(sql, (error: any, results: unknown) => {
                 if (error) {
                     return rej(error)
                 }
@@ -81,7 +81,7 @@ export class Test {
         const sql: string = 'insert into t_order(order_content) values(?)'
         const params: any[] = [form.getContent()]
         let promise = new Promise((res, rej) => {
-        DBUtil.doExec(sql, (error, result) => {
+        DBUtil.doExec(sql, (error: any, result: unknown) => {
                 if (error) {
                     return rej(error)
                 }
@@ -104,7 +104,7 @@ export class Test {
         console.log(form)
         const params: any[] = [form.getOrderContent(), form.getOrderId()]
         let promise = new Promise((res, rej) => {
-        DBUtil.doExec(sql, (error, result) => {
+        DBUtil.doExec(sql, (error: any, result: unknown) => {
                 if (error) {
                     return rej(error)
                 }
@@ -126,7 +126,7 @@ export class Test {
         const sql: string = 'delete from t_order where order_id = ?'
         const params: any[] = [orderId]
         let promise = new Promise((res, rej) => {
-        DBUtil.doExec(sql, (error, result) => {
+        DBUtil.doExec(sql, (error: any, result: unknown) => {
                 if (error) {
                     return rej(error)
                 }
@@ -156,8 +156,10 @@ let test: Test = new Test()
 //     test.testSendEmail
 // })
 
-// let form: AddOrderForm = new AddOrderForm()
-// form.setContent("rongyao")
+let form: AddOrderForm = new AddOrderForm()
+form.setContent("rongyao")
+console.log(form)
+// test.testSendEmail()
 // test.testQueryAsyncInsert(form).then((data: any) => {
 //     console.log("outside invoke exec\n",data)
 // })

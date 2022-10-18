@@ -1,7 +1,7 @@
 import * as express from 'express'
 import { PageInfo } from '../common/PageInfo'
 import { Test } from '../HelloWorld'
-const app = express()
+const app = express.default()
 const port = 3000
 
 // 网络请求

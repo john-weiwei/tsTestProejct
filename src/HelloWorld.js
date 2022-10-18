@@ -39,8 +39,9 @@ exports.__esModule = true;
 exports.Test = void 0;
 var RequestResult_1 = require("./common/RequestResult");
 var Order_1 = require("./entity/Order");
-var DBUtil_1 = require("./utils/DBUtil");
-var EmailUtil_1 = require("./utils/EmailUtil");
+var DBUtil_1 = require("../src/utils/DBUtil");
+var EmailUtil_1 = require("../src/utils/EmailUtil");
+var AddOrderForm_1 = require("./form/AddOrderForm");
 var Test = /** @class */ (function () {
     function Test() {
     }
@@ -232,8 +233,10 @@ var test = new Test();
 //     test.testQuery
 //     test.testSendEmail
 // })
-// let form: AddOrderForm = new AddOrderForm()
-// form.setContent("rongyao")
+var form = new AddOrderForm_1.AddOrderForm();
+form.setContent("rongyao");
+console.log(form);
+// test.testSendEmail()
 // test.testQueryAsyncInsert(form).then((data: any) => {
 //     console.log("outside invoke exec\n",data)
 // })
@@ -243,7 +246,7 @@ var test = new Test();
 //     console.log(data)
 // })
 test.testQueryAsyncDelete(27).then(function (data) {
-    console.log(data);
+    // console.log(data)
 });
 // const insertSql = 'insert into t_order(order_content) values(?)';
 // let values = ['oppo']
