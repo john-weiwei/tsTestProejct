@@ -57,6 +57,10 @@ class EmailUtil {
         //开始发送邮件
         server.sendMail(mail, callback);
     }
+    static validateEmail(email) {
+        let reg = /[a-zA-Z0-9]+\@{1}\w+\.{1}[a-z]+\.?[a-z]+?/;
+        return reg.test(email);
+    }
 }
 exports.EmailUtil = EmailUtil;
 EmailUtil.sender = '2128093477@qq.com'; // 发送者邮箱

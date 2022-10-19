@@ -8,6 +8,7 @@ import { EmailUtil } from "../utils/EmailUtil";
 export class AccountService {
     constructor() { }
 
+    // 添加账户
     async addAccount(account: Account): Promise<RequestResult<boolean>> {
         let reqResult: RequestResult<boolean> = new RequestResult()
         // 参数校验
@@ -26,9 +27,10 @@ export class AccountService {
             return RequestResult.fail(errMsg)
         }
 
+        let nowDate: Date = new Date()
         const sql: string = 'insert into t_account (fname, femail, fid_card, fis_manager, fcreate_time, fupdate_time)' +
             'values (?,?,?,?,?,?)'
-        const params: any = [account.getName(), account.getEmail(), account.getIdCard(), account.isManager(), account.getCreateTime(), account.getUpdateTime()]
+        const params: any = [account.getName(), account.getEmail(), account.getIdCard(), account.isManager(), nowDate, nowDate]
         let promise = new Promise((res, rej) => {
             DBUtil.doExec(sql, (error: any, result: any) => {
                 if (error) {
@@ -47,6 +49,7 @@ export class AccountService {
         return reqResult
     }
 
+    // 是否管理员
     async isManager(userId: string): Promise<RequestResult<boolean>> {
         let reqResult: RequestResult<boolean> = new RequestResult()
         if (userId == null) {

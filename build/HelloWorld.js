@@ -164,6 +164,10 @@ class Test {
             console.log(result);
         });
     }
+    testRegExp(exp, str) {
+        let flag = exp.test(str);
+        console.log(flag);
+    }
 }
 exports.Test = Test;
 // 引用了Test就会执行
@@ -185,7 +189,12 @@ let test = new Test();
 //     console.log(data)
 // })
 // redis
-test.testRedisSave();
+// test.testRedisSave()
+// 正则表达式
+let reg = /[a-zA-Z0-9]+\@{1}\w+\.{1}[a-z]+\.?[a-z]+?/;
+// let reg = /[a-zA-Z]{1}\d{6}\(/
+let str = 'A123456@qq.com.cn';
+test.testRegExp(reg, str);
 // const insertSql = 'insert into t_order(order_content) values(?)';
 // let values = ['oppo']
 // DBUtil.doExec(insertSql, function (error, results, fields) {

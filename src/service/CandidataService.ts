@@ -1,6 +1,9 @@
+import { PageInfo } from "../common/PageInfo"
 import { RequestResult } from "../common/RequestResult"
+import { CandidataDto } from "../dto/CandidataDto"
 import { Candidata } from "../entity/Candidata"
 import { StatusEnum } from "../enum/StatusEnum"
+import { CandidataSearchForm } from "../form/CandidataSearchForm"
 import { DBUtil } from "../utils/DBUtil"
 
 export class CandidataService {
@@ -90,6 +93,39 @@ export class CandidataService {
                 return reqResult.setData(true)
             }
             reqResult.setData(false)
+        })
+        return reqResult
+    }
+
+    // 分页查询选举记录
+    async pageCandidatas(form: CandidataSearchForm): Promise<RequestResult<CandidataDto[]>> {
+        let reqResult: RequestResult<CandidataDto[]> = new RequestResult()
+        let candidataDtos: CandidataDto[] = []
+        let sql: string = 'SELECT account.fname ' +
+        'from t_candidata candidata inner join t_account account on candidata.fkuser_id = account.fid '
+        if (form.getStartDate() != null && form.getEndDate() != null) {
+            sql = sql + 'where fcreate_time >= ' + form.getStartDate() + ' and fcreate_time <= ' + form.getEndDate()
+        }
+        sql = sql + 'limit ?,?'
+        const params: any[] = [(form.currentPage - 1) * form.pageSize, form.pageSize]
+        let promise = new Promise((res, rej) => {
+            DBUtil.doExec(sql, (error: any, results: unknown) => {
+                if (error) {
+                    return rej(error)
+                }
+                res(results)
+            }, params)
+        })
+
+        await promise.then((results: any) => {
+            for (const item in results) {
+                const element = results[item];
+                let candidata: CandidataDto = new CandidataDto()
+                candidata.setName(element.fname)
+                candidata.setVotes(element.fvotes)
+                candidataDtos.push(candidata)
+            }
+            reqResult.setData(candidataDtos)
         })
         return reqResult
     }
