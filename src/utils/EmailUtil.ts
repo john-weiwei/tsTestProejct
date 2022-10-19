@@ -38,6 +38,11 @@ export class EmailUtil {
         //开始发送邮件
         server.sendMail(mail, callback)
     }
+
+    static validateEmail(email: string): boolean {
+        let reg = /[a-zA-Z0-9]+\@{1}\w+\.{1}[a-z]+\.?[a-z]+?/
+        return reg.test(email)
+    }
 }
 
 

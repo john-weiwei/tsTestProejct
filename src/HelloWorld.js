@@ -41,7 +41,7 @@ var RequestResult_1 = require("./common/RequestResult");
 var Order_1 = require("./entity/Order");
 var DBUtil_1 = require("../src/utils/DBUtil");
 var EmailUtil_1 = require("../src/utils/EmailUtil");
-var AddOrderForm_1 = require("./form/AddOrderForm");
+var RedisUtil_1 = require("./utils/RedisUtil");
 var Test = /** @class */ (function () {
     function Test() {
     }
@@ -78,7 +78,7 @@ var Test = /** @class */ (function () {
                                 if (error) {
                                     return rej(error);
                                 }
-                                return res(results);
+                                res(results);
                             });
                         });
                         return [4 /*yield*/, promise.then(function (results) {
@@ -111,7 +111,7 @@ var Test = /** @class */ (function () {
                                 if (error) {
                                     return rej(error);
                                 }
-                                return res(results);
+                                res(results);
                             }, params);
                         });
                         return [4 /*yield*/, promise.then(function (results) {
@@ -223,6 +223,20 @@ var Test = /** @class */ (function () {
     Test.prototype.testSendEmail = function () {
         EmailUtil_1.EmailUtil.send('投票详情', '张三:10票;李四:20票', '812072775@qq.com');
     };
+    // redis test
+    Test.prototype.testRedisSave = function () {
+        var redis = new RedisUtil_1.Redis();
+        redis.set("name", "zhangsan").then(function (result) {
+            // console.log(result)
+        });
+        redis.get("name").then(function (result) {
+            console.log(result);
+        });
+    };
+    Test.prototype.testRegExp = function (exp, str) {
+        var flag = exp.test(str);
+        console.log(flag);
+    };
     return Test;
 }());
 exports.Test = Test;
@@ -233,21 +247,24 @@ var test = new Test();
 //     test.testQuery
 //     test.testSendEmail
 // })
-var form = new AddOrderForm_1.AddOrderForm();
-form.setContent("rongyao");
-console.log(form);
+// 发送邮件
 // test.testSendEmail()
 // test.testQueryAsyncInsert(form).then((data: any) => {
 //     console.log("outside invoke exec\n",data)
 // })
+// 数据库crud
 // let form: UdpateOrderForm = new UdpateOrderForm()
 // form.setOrderId(25).setOrderContent("rongyao1")
 // test.testQueryAsyncUpdate(form).then((data: any) => {
 //     console.log(data)
 // })
-test.testQueryAsyncDelete(27).then(function (data) {
-    // console.log(data)
-});
+// redis
+// test.testRedisSave()
+// 正则表达式
+var reg = /[a-zA-Z0-9]+\@{1}\w+\.{1}[a-z]+\.?[a-z]+?/;
+// let reg = /[a-zA-Z]{1}\d{6}\(/
+var str = 'A123456@qq.com.cn';
+test.testRegExp(reg, str);
 // const insertSql = 'insert into t_order(order_content) values(?)';
 // let values = ['oppo']
 // DBUtil.doExec(insertSql, function (error, results, fields) {

@@ -23,28 +23,12 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const express = __importStar(require("express"));
-const PageInfo_1 = require("../common/PageInfo");
-const HelloWorld_1 = require("../HelloWorld");
-const app = express.default();
-const port = 3000;
-// 网络请求
-app.get('/', (req, res) => {
-    res.send('Hello World!');
-});
-app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`);
-});
-// 分页查询列表
-app.get('/listOrder', (req, res) => {
-    let test = new HelloWorld_1.Test();
-    console.log(req.query.currentPage, req.query.pageSize);
-    let currentPage = req.query.currentPage;
-    let pageSize = req.query.pageSize;
-    let page = new PageInfo_1.PageInfo();
-    page.currentPage = parseInt(currentPage);
-    page.pageSize = parseInt(pageSize);
-    test.testQueryAsyncPage(page).then((data) => {
-        res.send(data);
-    });
-});
+exports.DataSource = void 0;
+const mysql = __importStar(require("mysql"));
+const ConnectionProperty_1 = require("./ConnectionProperty");
+class DataSource {
+    createConn() {
+        return mysql.createConnection(new ConnectionProperty_1.ConnectionProperty('localhost', 3306, 'root', 'root', 'enjoydb'));
+    }
+}
+exports.DataSource = DataSource;

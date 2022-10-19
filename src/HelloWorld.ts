@@ -7,6 +7,7 @@ import { EmailUtil } from "../src/utils/EmailUtil";
 import { PageInfo } from "./common/PageInfo";
 import { AddOrderForm } from "./form/AddOrderForm";
 import { UdpateOrderForm } from "./form/UpdateOrderForm";
+import { Redis } from "./utils/RedisUtil";
 export class Test {
     testQuery(): RequestResult<Order[]> {
         const sql: string = 'SELECT * from t_order'
@@ -36,7 +37,7 @@ export class Test {
                 if (error) {
                     return rej(error)
                 }
-                return res(results)
+                res(results)
             })
         })
 
@@ -50,7 +51,7 @@ export class Test {
         })
         return reqResult
     }
-    
+
     async testQueryAsyncPage(page: PageInfo): Promise<RequestResult<Order[]>> {
         let reqResult: RequestResult<Order[]> = new RequestResult()
         let orders: Order[] = []
@@ -61,7 +62,7 @@ export class Test {
                 if (error) {
                     return rej(error)
                 }
-                return res(results)
+                res(results)
             }, params)
         })
 
@@ -81,7 +82,7 @@ export class Test {
         const sql: string = 'insert into t_order(order_content) values(?)'
         const params: any[] = [form.getContent()]
         let promise = new Promise((res, rej) => {
-        DBUtil.doExec(sql, (error: any, result: unknown) => {
+            DBUtil.doExec(sql, (error: any, result: unknown) => {
                 if (error) {
                     return rej(error)
                 }
@@ -104,7 +105,7 @@ export class Test {
         console.log(form)
         const params: any[] = [form.getOrderContent(), form.getOrderId()]
         let promise = new Promise((res, rej) => {
-        DBUtil.doExec(sql, (error: any, result: unknown) => {
+            DBUtil.doExec(sql, (error: any, result: unknown) => {
                 if (error) {
                     return rej(error)
                 }
@@ -126,7 +127,7 @@ export class Test {
         const sql: string = 'delete from t_order where order_id = ?'
         const params: any[] = [orderId]
         let promise = new Promise((res, rej) => {
-        DBUtil.doExec(sql, (error: any, result: unknown) => {
+            DBUtil.doExec(sql, (error: any, result: unknown) => {
                 if (error) {
                     return rej(error)
                 }
@@ -146,6 +147,24 @@ export class Test {
     testSendEmail(): void {
         EmailUtil.send('投票详情', '张三:10票;李四:20票', '812072775@qq.com')
     }
+
+    // redis test
+    testRedisSave() {
+        let redis: Redis = new Redis()
+        redis.set("name", "zhangsan").then((result: any) => {
+            // console.log(result)
+        })
+
+
+        redis.get("name").then((result: any) => {
+            console.log(result)
+        })
+    }
+
+    testRegExp(exp: any, str: string) {
+        let flag: any = exp.test(str)
+        console.log(flag)
+    }
 }
 
 // 引用了Test就会执行
@@ -156,24 +175,27 @@ let test: Test = new Test()
 //     test.testSendEmail
 // })
 
-let form: AddOrderForm = new AddOrderForm()
-form.setContent("rongyao")
-console.log(form)
+// 发送邮件
 // test.testSendEmail()
 // test.testQueryAsyncInsert(form).then((data: any) => {
 //     console.log("outside invoke exec\n",data)
 // })
 
+// 数据库crud
 // let form: UdpateOrderForm = new UdpateOrderForm()
 // form.setOrderId(25).setOrderContent("rongyao1")
 // test.testQueryAsyncUpdate(form).then((data: any) => {
 //     console.log(data)
 // })
 
-test.testQueryAsyncDelete(27).then((data: any) => {
-    // console.log(data)
-})
+// redis
+// test.testRedisSave()
 
+// 正则表达式
+let reg = /[a-zA-Z0-9]+\@{1}\w+\.{1}[a-z]+\.?[a-z]+?/
+// let reg = /[a-zA-Z]{1}\d{6}\(/
+let str: string = 'A123456@qq.com.cn'
+test.testRegExp(reg, str)
 
 // const insertSql = 'insert into t_order(order_content) values(?)';
 // let values = ['oppo']

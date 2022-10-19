@@ -1,7 +1,7 @@
-import * as express from 'express'
+import express = require('express')
 import { PageInfo } from '../common/PageInfo'
 import { Test } from '../HelloWorld'
-const app = express.default()
+const app = express()
 const port = 3000
 
 // 网络请求
