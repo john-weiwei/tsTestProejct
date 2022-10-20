@@ -7,7 +7,8 @@ import { EmailUtil } from "../src/utils/EmailUtil";
 import { PageInfo } from "./common/PageInfo";
 import { AddOrderForm } from "./form/AddOrderForm";
 import { UdpateOrderForm } from "./form/UpdateOrderForm";
-import { Redis } from "./utils/RedisUtil";
+import { RedisUtil } from "./utils/RedisUtil";
+import { DateUtil } from "./utils/DateUtil";
 export class Test {
     testQuery(): RequestResult<Order[]> {
         const sql: string = 'SELECT * from t_order'
@@ -150,14 +151,32 @@ export class Test {
 
     // redis test
     testRedisSave() {
-        let redis: Redis = new Redis()
-        redis.set("name", "zhangsan").then((result: any) => {
-            // console.log(result)
+        let redis: RedisUtil = new RedisUtil()
+        // redis.set("", 1).then((result: any) => {
+        //     // console.log(result)
+        // })
+
+        redis.sadd("accounts", 2).then((result: any) => {
+            console.log(result)
+        }).catch((err: any) => {
+            console.log(err)
         })
 
 
-        redis.get("name").then((result: any) => {
+        // redis.get("name").then((result: any) => {
+        //     console.log(result)
+        // })
+
+        redis.sismember("accounts", 3).then((result: any) => {
             console.log(result)
+        }).catch((err: any) => {
+            console.log(err) 
+        })
+
+        redis.smembers("accounts").then((result: any) => {
+            console.log(result)
+        }).catch((err: any) => {
+            console.log(err) 
         })
     }
 
@@ -192,10 +211,11 @@ let test: Test = new Test()
 // test.testRedisSave()
 
 // 正则表达式
-let reg = /[a-zA-Z0-9]+\@{1}\w+\.{1}[a-z]+\.?[a-z]+?/
+// let reg = /[a-zA-Z0-9]+\@{1}\w+\.{1}[a-z]+\.?[a-z]+?/
 // let reg = /[a-zA-Z]{1}\d{6}\(/
-let str: string = 'A123456@qq.com.cn'
-test.testRegExp(reg, str)
+// let str: string = 'A123456@qq.com.cn'
+// DateUtil.nextFewDay(new Date(), 2)
+// test.testRegExp(reg, str)
 
 // const insertSql = 'insert into t_order(order_content) values(?)';
 // let values = ['oppo']

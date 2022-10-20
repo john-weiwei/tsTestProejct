@@ -1,8 +1,9 @@
-const redis = require("redis")
+// import redis from "redis";
+const redis = require('redis')
 const host = "127.0.0.1"; // redis服务地址
 const port = '6379' // redis服务端口
 
-export class Redis {
+export class RedisUtil {
   redisClient: any;
   constructor() {
     this.redisClient = redis.createClient({
@@ -87,44 +88,42 @@ export class Redis {
     });
   }
 
-  // push 将给定值推入列表的右端 返回值 当前列表长度
-  async rPush(key: any, list: any, exprires: number) {
+  // 添加到Set集合
+  async sadd(key: any, member: any) {
     return new Promise((resolve, reject) => {
-      this.redisClient.rPush(key, list, (err: any, length: any) => {
+      this.redisClient.sadd(key, member, (err: any, result: any) => {
         if (err) {
           reject(false);
-        }
-        if (!isNaN(exprires)) {
-          this.redisClient.exports(key, exprires);
-        }
-        resolve(length);
-      })
-    })
-  }
-
-  // 查询list的值
-  async lrange(key: any, startIndex = 0, stopIndex = -1) {
-    return new Promise((resolve, reject) => {
-      this.redisClient.lRange(key, startIndex, stopIndex, (err: any, result: any) => {
-        if (err) {
-          reject(false);
-        }
-        resolve(result)
-      })
-    })
-  }
-
-  // 清除list中n个值为value的项
-  async lrem(key: any, n = 1, value: any) {
-    return new Promise((resolve, reject) => {
-      this.redisClient.lrem(key, n, value, (err: any, result: any) => {
-        if (err) {
-          return false
         }
         resolve(result);
       })
-    });
+    })
   }
+
+  // 是否存在Set集合
+  async sismember(key: any, member: any) {
+    return new Promise((resolve, reject) => {
+      this.redisClient.sismember(key, member, (err: any, result: any) => {
+        if (err) {
+          reject(false);
+        }
+        resolve(result);
+      })
+    })
+  }
+  
+  // 获取Set集合
+  async smembers(key: any) {
+    return new Promise((resolve, reject) => {
+      this.redisClient.smembers(key, (err: any, result: any) => {
+        if (err) {
+          reject(false);
+        }
+        resolve(result);
+      })
+    })
+  }
+
 }
 
 

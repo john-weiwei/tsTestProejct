@@ -1,14 +1,16 @@
 import { PageInfo } from "../common/PageInfo";
+import { StatusEnum } from "../enum/StatusEnum";
 
 // 选举信息查询form
 export class CandidataSearchForm extends PageInfo {
-    startDate!: Date
-    endDate!: Date
+    startDate!: string
+    endDate!: string
+    status!: StatusEnum
     constructor() {
         super();
     }
 
-    setStartDate(startDate: Date) {
+    setStartDate(startDate: string) {
         this.startDate = startDate
     }
 
@@ -16,11 +18,19 @@ export class CandidataSearchForm extends PageInfo {
         return this.startDate
     }
 
-    setEndDate(endDate: Date) {
+    setEndDate(endDate: string) {
         this.endDate = endDate
     }
 
     getEndDate() {
         return this.endDate
+    }
+
+    setStatus(status: StatusEnum) {
+        this.status = status
+    }
+
+    getStatus() {
+        return this.status
     }
 }

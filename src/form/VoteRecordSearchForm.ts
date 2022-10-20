@@ -1,13 +1,23 @@
 import { PageInfo } from "../common/PageInfo";
+
 // 投票记录查询form
 export class VoteRecordSearchForm extends PageInfo {
-    startDate!: Date
-    endDate!: Date
+    candidataUserId!: string
+    startDate!: string
+    endDate!: string
     constructor() {
         super();
     }
 
-    setStartDate(startDate: Date) {
+    setCandidataUserId(candidataUserId: string) {
+        this.candidataUserId = candidataUserId
+    }
+
+    getCandidataUserId() {
+        return this.candidataUserId
+    }
+
+    setStartDate(startDate: string) {
         this.startDate = startDate
     }
 
@@ -15,7 +25,7 @@ export class VoteRecordSearchForm extends PageInfo {
         return this.startDate
     }
 
-    setEndDate(endDate: Date) {
+    setEndDate(endDate: string) {
         this.endDate = endDate
     }
 

@@ -57,8 +57,8 @@ export class AccountService {
             return RequestResult.fail(errMsg)
         }
         const sql: string = 'select fid,fname, femail, fid_card, fis_manager, fcreate_time, fupdate_time t_account ' +
-            'from t_account' +
-            'where fid = ?'
+            ' from t_account' +
+            ' where fid = ?'
         const params: any = [userId]
         let promise = new Promise((res, rej) => {
             DBUtil.doExec(sql, (error: any, result: any) => {
@@ -70,7 +70,7 @@ export class AccountService {
         })
 
         await promise.then((result: any) => {
-            if (result.serverStatus == 2) {
+            if (result != null && result[0].fis_manager == 1) {
                 return reqResult.setData(true)
             }
             reqResult.setData(false)
