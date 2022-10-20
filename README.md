@@ -1,3 +1,6 @@
+# 环境准备
+mysql、redis
+
 # 创建数据表
 ## 用户信息表
 create table t_account
@@ -39,7 +42,11 @@ create table t_vote_record
 # 安装依赖
 
 typescript 插件
-npm install -g typescript 
+npm install -g typescript
+
+typescript 的执行环境
+npm install ts-node
+npm install tslib @types/node -g
 
 redis 插件
 npm install redis
@@ -50,6 +57,4 @@ npm install mysql
 email 插件
 npm install nodemailer
 
-typescript 的执行环境
-npm install ts-node
-npm install tslib @types/node -g
+
