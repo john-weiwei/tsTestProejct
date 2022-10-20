@@ -20,6 +20,7 @@ create table t_candidate
     fkuser_id        varchar(255)     not null,
     fstatus       varchar(16)     not null,
     fvotes     int(11)     not null,
+    fis_new    int(1)      not null,
     fcreate_time datetime             null,
     fupdate_time datetime             null
 );

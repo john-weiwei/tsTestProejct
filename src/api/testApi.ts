@@ -1,12 +1,10 @@
 import express = require('express')
-import { PageInfo } from '../common/PageInfo'
 import { Account } from '../entity/Account'
 import { StatusEnum } from '../enum/StatusEnum'
 import { AddVoteForm } from '../form/AddVoteForm'
 import { CandidataSearchForm } from '../form/CandidataSearchForm'
 import { StartVoteForm } from '../form/StartVoteForm'
 import { VoteRecordSearchForm } from '../form/VoteRecordSearchForm'
-import { Test } from '../HelloWorld'
 import { AccountService } from '../service/AccountService'
 import { CandidateService } from '../service/CandidateService'
 import { VoteRecordService } from '../service/VoteRecordService'
@@ -21,20 +19,6 @@ app.get('/', (req, res) => {
 app.use(express.json())
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
-})
-
-// 分页查询列表
-app.get('/listOrder', (req, res) => {
-  let test: Test = new Test()
-  console.log(req.query.currentPage, req.query.pageSize)
-  let currentPage: any = req.query.currentPage
-  let pageSize: any = req.query.pageSize
-  let page: PageInfo = new PageInfo();
-  page.currentPage = parseInt(currentPage)
-  page.pageSize = parseInt(pageSize)
-  test.testQueryAsyncPage(page).then((data: any) => {
-    res.send(data)
-  })
 })
 
 /**

@@ -18,6 +18,8 @@ export class VoteRecordService {
 
     // 添加投票记录
     async addVoteRecord(form: AddVoteForm): Promise<RequestResult<boolean>> {
+        if (form == null) return RequestResult.fail('参数不能为空')
+
         // 判断是否投过票
         let res = await this.redis.sismember(RedisKeyConstants.VOTED_USER, form.getVoteUserId()).then((result: any) => {
             return result
@@ -60,6 +62,7 @@ export class VoteRecordService {
 
     // 分页查询投票记录
     async pageVoteRecords(form: VoteRecordSearchForm): Promise<RequestResult<AccountDto[]>> {
+        if (form == null) return RequestResult.fail('参数不能为空')
         let reqResult: RequestResult<AccountDto[]> = new RequestResult()
         let accounts: AccountDto[] = []
         let params: any[] = []

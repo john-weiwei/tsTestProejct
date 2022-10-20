@@ -10,7 +10,6 @@ export class AccountService {
 
     // 添加账户
     async addAccount(account: Account): Promise<RequestResult<boolean>> {
-        let reqResult: RequestResult<boolean> = new RequestResult()
         // 参数校验
         if (account.getName() == null || account.getEmail() == null || account.getIdCard() == null) {
             const errMsg = '用户名-邮箱-身份证号为必填项'
@@ -27,6 +26,7 @@ export class AccountService {
             return RequestResult.fail(errMsg)
         }
 
+        let reqResult: RequestResult<boolean> = new RequestResult()
         let nowDate: Date = new Date()
         const sql: string = 'insert into t_account (fname, femail, fid_card, fis_manager, fcreate_time, fupdate_time)' +
             'values (?,?,?,?,?,?)'
@@ -51,11 +51,7 @@ export class AccountService {
 
     // 是否管理员
     async isManager(userId: string): Promise<RequestResult<boolean>> {
-        let reqResult: RequestResult<boolean> = new RequestResult()
-        if (userId == null) {
-            const errMsg = 'useId is null'
-            return RequestResult.fail(errMsg)
-        }
+        if (userId == null) return RequestResult.fail('参数不能为空')
         const sql: string = 'select fid,fname, femail, fid_card, fis_manager, fcreate_time, fupdate_time t_account ' +
             ' from t_account' +
             ' where fid = ?'
@@ -69,6 +65,7 @@ export class AccountService {
             }, params)
         })
 
+        let reqResult: RequestResult<boolean> = new RequestResult()
         await promise.then((result: any) => {
             if (result != null && result[0].fis_manager == 1) {
                 return reqResult.setData(true)

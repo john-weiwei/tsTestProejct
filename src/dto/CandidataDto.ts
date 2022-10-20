@@ -2,6 +2,7 @@
 export class CandidataDto {
     userId!: string
     name!: string
+    email!: string
     votes!: number
     constructor() {}
 
@@ -19,6 +20,14 @@ export class CandidataDto {
 
     getName() {
         return this.name
+    }
+    
+    setEmail(email: string) {
+        this.email = email
+    }
+
+    getEmail() {
+        return this.email
     }
 
     setVotes(votes: number) {

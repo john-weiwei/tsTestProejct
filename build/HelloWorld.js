@@ -11,124 +11,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Test = void 0;
 const RequestResult_1 = require("./common/RequestResult");
-const Order_1 = require("./entity/Order");
 const DBUtil_1 = require("../src/utils/DBUtil");
 const EmailUtil_1 = require("../src/utils/EmailUtil");
 const RedisUtil_1 = require("./utils/RedisUtil");
 class Test {
-    testQuery() {
-        const sql = 'SELECT * from t_order';
-        let reqResult = new RequestResult_1.RequestResult();
-        DBUtil_1.DBUtil.doExec(sql, function (error, results, fields) {
-            if (error)
-                throw error;
-            let orders = [];
-            for (const item in results) {
-                if (Object.prototype.hasOwnProperty.call(results, item)) {
-                    const element = results[item];
-                    let order = new Order_1.Order(element.order_id, element.order_content);
-                    orders.push(order);
-                }
-            }
-            reqResult.setData(orders);
-        });
-        console.log(reqResult);
-        return reqResult;
-    }
-    testQueryAsync() {
-        return __awaiter(this, void 0, void 0, function* () {
-            let reqResult = new RequestResult_1.RequestResult();
-            let orders = [];
-            const sql = 'SELECT * from t_order';
-            let promise = new Promise((res, rej) => {
-                DBUtil_1.DBUtil.doExec(sql, (error, results) => {
-                    if (error) {
-                        return rej(error);
-                    }
-                    res(results);
-                });
-            });
-            yield promise.then((results) => {
-                for (const item in results) {
-                    const element = results[item];
-                    let order = new Order_1.Order(element.order_id, element.order_content);
-                    orders.push(order);
-                }
-                reqResult.setData(orders);
-            });
-            return reqResult;
-        });
-    }
-    testQueryAsyncPage(page) {
-        return __awaiter(this, void 0, void 0, function* () {
-            let reqResult = new RequestResult_1.RequestResult();
-            let orders = [];
-            const sql = 'SELECT * from t_order limit ?,?';
-            const params = [(page.currentPage - 1) * page.pageSize, page.pageSize];
-            let promise = new Promise((res, rej) => {
-                DBUtil_1.DBUtil.doExec(sql, (error, results) => {
-                    if (error) {
-                        return rej(error);
-                    }
-                    res(results);
-                }, params);
-            });
-            yield promise.then((results) => {
-                for (const item in results) {
-                    const element = results[item];
-                    let order = new Order_1.Order(element.order_id, element.order_content);
-                    orders.push(order);
-                }
-                reqResult.setData(orders);
-            });
-            return reqResult;
-        });
-    }
-    testQueryAsyncInsert(form) {
-        return __awaiter(this, void 0, void 0, function* () {
-            let reqResult = new RequestResult_1.RequestResult();
-            const sql = 'insert into t_order(order_content) values(?)';
-            const params = [form.getContent()];
-            let promise = new Promise((res, rej) => {
-                DBUtil_1.DBUtil.doExec(sql, (error, result) => {
-                    if (error) {
-                        return rej(error);
-                    }
-                    res(result);
-                }, params);
-            });
-            yield promise.then((result) => {
-                if (result.serverStatus == 2) {
-                    return reqResult.setData(true);
-                }
-                reqResult.setData(false);
-            });
-            return reqResult;
-        });
-    }
-    testQueryAsyncUpdate(form) {
-        return __awaiter(this, void 0, void 0, function* () {
-            let reqResult = new RequestResult_1.RequestResult();
-            const sql = 'update t_order set order_content = ? where order_id = ?';
-            console.log(form);
-            const params = [form.getOrderContent(), form.getOrderId()];
-            let promise = new Promise((res, rej) => {
-                DBUtil_1.DBUtil.doExec(sql, (error, result) => {
-                    if (error) {
-                        return rej(error);
-                    }
-                    res(result);
-                }, params);
-            });
-            yield promise.then((result) => {
-                if (result.serverStatus == 2) {
-                    return reqResult.setData(true);
-                }
-                reqResult.setData(false);
-            });
-            return reqResult;
-        });
-    }
     testQueryAsyncDelete(orderId) {
         return __awaiter(this, void 0, void 0, function* () {
             let reqResult = new RequestResult_1.RequestResult();
@@ -156,12 +42,27 @@ class Test {
     }
     // redis test
     testRedisSave() {
-        let redis = new RedisUtil_1.Redis();
-        redis.set("name", "zhangsan").then((result) => {
-            // console.log(result)
-        });
-        redis.get("name").then((result) => {
+        let redis = new RedisUtil_1.RedisUtil();
+        // redis.set("", 1).then((result: any) => {
+        //     // console.log(result)
+        // })
+        redis.sadd("accounts", 2).then((result) => {
             console.log(result);
+        }).catch((err) => {
+            console.log(err);
+        });
+        // redis.get("name").then((result: any) => {
+        //     console.log(result)
+        // })
+        redis.sismember("accounts", 3).then((result) => {
+            console.log(result);
+        }).catch((err) => {
+            console.log(err);
+        });
+        redis.smembers("accounts").then((result) => {
+            console.log(result);
+        }).catch((err) => {
+            console.log(err);
         });
     }
     testRegExp(exp, str) {
@@ -191,10 +92,11 @@ let test = new Test();
 // redis
 // test.testRedisSave()
 // 正则表达式
-let reg = /[a-zA-Z0-9]+\@{1}\w+\.{1}[a-z]+\.?[a-z]+?/;
+// let reg = /[a-zA-Z0-9]+\@{1}\w+\.{1}[a-z]+\.?[a-z]+?/
 // let reg = /[a-zA-Z]{1}\d{6}\(/
-let str = 'A123456@qq.com.cn';
-test.testRegExp(reg, str);
+// let str: string = 'A123456@qq.com.cn'
+// DateUtil.nextFewDay(new Date(), 2)
+// test.testRegExp(reg, str)
 // const insertSql = 'insert into t_order(order_content) values(?)';
 // let values = ['oppo']
 // DBUtil.doExec(insertSql, function (error, results, fields) {

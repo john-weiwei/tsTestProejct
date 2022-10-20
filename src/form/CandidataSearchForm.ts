@@ -6,6 +6,7 @@ export class CandidataSearchForm extends PageInfo {
     startDate!: string
     endDate!: string
     status!: StatusEnum
+    isNew!: number
     constructor() {
         super();
     }
@@ -32,5 +33,13 @@ export class CandidataSearchForm extends PageInfo {
 
     getStatus() {
         return this.status
+    }
+    
+    setIsNew(isNew: number) {
+        this.isNew = isNew
+    }
+    
+    getIsNew() {
+        return this.isNew
     }
 }

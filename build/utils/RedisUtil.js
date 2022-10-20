@@ -9,11 +9,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Redis = void 0;
-const redis = require("redis");
+exports.RedisUtil = void 0;
+// import redis from "redis";
+const redis = require('redis');
 const host = "127.0.0.1"; // redis服务地址
 const port = '6379'; // redis服务端口
-class Redis {
+class RedisUtil {
     constructor() {
         this.redisClient = redis.createClient({
             url: `redis://${host}:${port}`,
@@ -98,27 +99,11 @@ class Redis {
             });
         });
     }
-    // push 将给定值推入列表的右端 返回值 当前列表长度
-    rPush(key, list, exprires) {
+    // 添加到Set集合
+    sadd(key, member) {
         return __awaiter(this, void 0, void 0, function* () {
             return new Promise((resolve, reject) => {
-                this.redisClient.rPush(key, list, (err, length) => {
-                    if (err) {
-                        reject(false);
-                    }
-                    if (!isNaN(exprires)) {
-                        this.redisClient.exports(key, exprires);
-                    }
-                    resolve(length);
-                });
-            });
-        });
-    }
-    // 查询list的值
-    lrange(key, startIndex = 0, stopIndex = -1) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return new Promise((resolve, reject) => {
-                this.redisClient.lRange(key, startIndex, stopIndex, (err, result) => {
+                this.redisClient.sadd(key, member, (err, result) => {
                     if (err) {
                         reject(false);
                     }
@@ -127,13 +112,26 @@ class Redis {
             });
         });
     }
-    // 清除list中n个值为value的项
-    lrem(key, n = 1, value) {
+    // 是否存在Set集合
+    sismember(key, member) {
         return __awaiter(this, void 0, void 0, function* () {
             return new Promise((resolve, reject) => {
-                this.redisClient.lrem(key, n, value, (err, result) => {
+                this.redisClient.sismember(key, member, (err, result) => {
                     if (err) {
-                        return false;
+                        reject(false);
+                    }
+                    resolve(result);
+                });
+            });
+        });
+    }
+    // 获取Set集合
+    smembers(key) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return new Promise((resolve, reject) => {
+                this.redisClient.smembers(key, (err, result) => {
+                    if (err) {
+                        reject(false);
                     }
                     resolve(result);
                 });
@@ -141,4 +139,4 @@ class Redis {
         });
     }
 }
-exports.Redis = Redis;
+exports.RedisUtil = RedisUtil;

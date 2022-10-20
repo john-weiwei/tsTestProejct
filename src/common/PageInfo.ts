@@ -5,4 +5,8 @@ export class PageInfo {
     constructor() {
 
     }
+
+    setPageSize(pageSize: number) {
+        this.pageSize = pageSize
+    }
 }

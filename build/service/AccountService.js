@@ -17,6 +17,7 @@ const EmailUtil_1 = require("../utils/EmailUtil");
 // 用户业务类
 class AccountService {
     constructor() { }
+    // 添加账户
     addAccount(account) {
         return __awaiter(this, void 0, void 0, function* () {
             let reqResult = new RequestResult_1.RequestResult();
@@ -33,9 +34,10 @@ class AccountService {
                 const errMsg = '邮箱格式不正确,例如:xxx@qq.com.cn或xxx@qq.com';
                 return RequestResult_1.RequestResult.fail(errMsg);
             }
+            let nowDate = new Date();
             const sql = 'insert into t_account (fname, femail, fid_card, fis_manager, fcreate_time, fupdate_time)' +
                 'values (?,?,?,?,?,?)';
-            const params = [account.getName(), account.getEmail(), account.getIdCard(), account.isManager(), account.getCreateTime(), account.getUpdateTime()];
+            const params = [account.getName(), account.getEmail(), account.getIdCard(), account.isManager(), nowDate, nowDate];
             let promise = new Promise((res, rej) => {
                 DBUtil_1.DBUtil.doExec(sql, (error, result) => {
                     if (error) {
@@ -53,6 +55,7 @@ class AccountService {
             return reqResult;
         });
     }
+    // 是否管理员
     isManager(userId) {
         return __awaiter(this, void 0, void 0, function* () {
             let reqResult = new RequestResult_1.RequestResult();
@@ -61,8 +64,8 @@ class AccountService {
                 return RequestResult_1.RequestResult.fail(errMsg);
             }
             const sql = 'select fid,fname, femail, fid_card, fis_manager, fcreate_time, fupdate_time t_account ' +
-                'from t_account' +
-                'where fid = ?';
+                ' from t_account' +
+                ' where fid = ?';
             const params = [userId];
             let promise = new Promise((res, rej) => {
                 DBUtil_1.DBUtil.doExec(sql, (error, result) => {
@@ -73,7 +76,7 @@ class AccountService {
                 }, params);
             });
             yield promise.then((result) => {
-                if (result.serverStatus == 2) {
+                if (result != null && result[0].fis_manager == 1) {
                     return reqResult.setData(true);
                 }
                 reqResult.setData(false);
