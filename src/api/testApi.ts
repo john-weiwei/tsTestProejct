@@ -37,6 +37,15 @@ app.get('/listOrder', (req, res) => {
   })
 })
 
+/**
+ * http://localhost:3000/addAccount
+  {
+  "name":"liusan",
+    "email":"812072735@qq.com",
+    "idCard":"A123456(9)",
+    "managerFlag":true
+}
+ */
 // 第一步：新增账户
 // 参数： name——用户名,email——邮箱,idCard——身份证,managerFlag——是否管理员 true-是，false-否)
 app.post('/addAccount', (req, res) => {
@@ -51,6 +60,12 @@ app.post('/addAccount', (req, res) => {
   })
 })
 
+/**
+ * http://localhost:3000/addCandidate
+ * {
+    "userId":5
+}
+ */
 // 第二步：添加候选人
 // 参数： userId——用户id
 app.post('/addCandidate', (req, res) => {
@@ -61,6 +76,14 @@ app.post('/addCandidate', (req, res) => {
   })
 })
 
+
+/**
+ * http://localhost:3000/startOrEndCandidata
+ * {
+    "operatorId":11,
+    "status":"START"
+}
+ */
 // 第三步：开始或结束投票
 // 参数： operatorId——操作人id,status——选择状态START:开始,ENDED:结束
 app.post('/startOrEndCandidata', (req, res) => {
@@ -75,6 +98,13 @@ app.post('/startOrEndCandidata', (req, res) => {
   })
 })
 
+/**
+ * http://localhost:3000/addVoteRecord
+ * {
+	"candidataUserId":3,
+    "voteUserId":7
+}
+ */
 // 第四步：投票
 // 参数：candidataUserId——候选人id，voteUserId——投票人id
 app.post('/addVoteRecord', async (req, res) => {
@@ -93,6 +123,9 @@ app.post('/addVoteRecord', async (req, res) => {
   })
 })
 
+/**
+ * http://localhost:3000/pageCandidates?currentPage=1&pageSize=10&startDate=2022-10-19&endDate=2022-10-20
+ */
 // 第五步：分页查询候选人信息
 // 参数：startDate——开始时间，endDate——结束时间
 // status——选举状态
@@ -115,7 +148,10 @@ app.get('/pageCandidates', async (req, res) => {
   })
 })
 
-// 第六步：分页查询候选人投票记录
+/**
+ * http://localhost:3000/pageVoteRecords?candidataUserId=3
+ */
+// 第六步：分页查询指定候选人投票记录
 app.get('/pageVoteRecords', async (req, res) => {
   let form: VoteRecordSearchForm = new VoteRecordSearchForm()
   const startDate: any = req.query.startDate
