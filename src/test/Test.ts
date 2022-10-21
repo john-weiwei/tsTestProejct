@@ -64,6 +64,13 @@ export class Test {
         let flag: any = exp.test(str)
         console.log(flag)
     }
+
+    testSymbo() {
+        console.log(20 % 10)
+        console.log(20 / 10)
+        let a: any = 11 / 10
+        console.log(parseInt(a))
+    }
 }
 
 // 引用了Test就会执行
@@ -96,6 +103,8 @@ let test: Test = new Test()
 // let str: string = 'A123456@qq.com.cn'
 // DateUtil.nextFewDay(new Date(), 2)
 // test.testRegExp(reg, str)
+
+test.testSymbo()
 
 // const insertSql = 'insert into t_order(order_content) values(?)';
 // let values = ['oppo']

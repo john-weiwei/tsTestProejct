@@ -1,10 +1,11 @@
-import { PageInfo } from "../common/PageInfo";
+import { PageForm } from "./PageForm";
 
 // 投票记录查询form
-export class VoteRecordSearchForm extends PageInfo {
+export class VoteRecordSearchForm extends PageForm {
     candidataUserId!: string
     startDate!: string
     endDate!: string
+    numberElection!: number
     constructor() {
         super();
     }
@@ -31,5 +32,13 @@ export class VoteRecordSearchForm extends PageInfo {
 
     getEndDate() {
         return this.endDate
+    }
+    
+    setNumberElection(numberElection: number) {
+        this.numberElection = numberElection
+    }
+    
+    getNumberElection() {
+        return this.numberElection
     }
 }

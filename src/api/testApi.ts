@@ -69,7 +69,7 @@ app.post('/addCandidate', (req, res) => {
 }
  */
 // 第三步：开始或结束投票
-// 参数： operatorId——操作人id,status——选择状态START:开始,ENDED:结束
+// 参数： operatorId——操作人id,status——选择状态START:开始,END:结束
 app.post('/startOrEndCandidata', (req, res) => {
   let form: StartVoteForm = new StartVoteForm()
   const operatorId: string = req.body.operatorId
@@ -99,9 +99,17 @@ app.post('/addVoteRecord', async (req, res) => {
   form.setVoteUserId(voteUserId)
 
   const voteRecordService: VoteRecordService = new VoteRecordService()
-  await voteRecordService.addVoteRecord(form).then((result) => { console.log(result) })
+  const addVoteRecordReq = await voteRecordService.addVoteRecord(form).then((result) => { return result })
+  if (addVoteRecordReq.getErrCode() != null) {
+      res.send(addVoteRecordReq)
+      return
+  }
 
+  // 最新选举批次
+  const candidateService: CandidateService = new CandidateService()
+  let newestNumberElection: any = await candidateService.newestNumberOfElection().then((result) => { return result}).catch((err) => { console.error(err) })
   let searchForm: VoteRecordSearchForm = new VoteRecordSearchForm()
+  searchForm.setNumberElection(parseInt(newestNumberElection))
   await voteRecordService.pageVoteRecords(searchForm).then((result) => {
     res.send(result)
   })
@@ -116,7 +124,7 @@ app.post('/addVoteRecord', async (req, res) => {
 // NOT_STARTED = 'NOT_STARTED', // 未开始
 // START = 'START', // 开始
 // PROCESSING = 'POCESSING', // 进行中
-// ENDED = 'ENDED' // 已结束
+// END = 'END' // 已结束
 app.get('/pageCandidates', async (req, res) => {
   let form: CandidataSearchForm = new CandidataSearchForm()
   const startDate: any = req.query.startDate

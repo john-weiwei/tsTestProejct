@@ -1,12 +1,12 @@
-import { PageInfo } from "../common/PageInfo";
+import { PageForm } from "./PageForm";
 import { StatusEnum } from "../enum/StatusEnum";
 
 // 选举信息查询form
-export class CandidataSearchForm extends PageInfo {
+export class CandidataSearchForm extends PageForm {
     startDate!: string
     endDate!: string
     status!: StatusEnum
-    isNew!: number
+    numberElection!: number
     constructor() {
         super();
     }
@@ -35,11 +35,11 @@ export class CandidataSearchForm extends PageInfo {
         return this.status
     }
     
-    setIsNew(isNew: number) {
-        this.isNew = isNew
+    setNumberElection(numberElection: number) {
+        this.numberElection = numberElection
     }
     
-    getIsNew() {
-        return this.isNew
+    getNumberElection() {
+        return this.numberElection
     }
 }

@@ -2,6 +2,7 @@
 export class AddVoteForm {
     candidataUserId!: string
     voteUserId!: string
+    numberElection!: number
     constructor() {}
 
     setCandidataUserId(candidataUserId: string) {
@@ -19,4 +20,13 @@ export class AddVoteForm {
     getVoteUserId() {
         return this.voteUserId
     }
+    
+    setNumberElection(numberElection: number) {
+        this.numberElection = numberElection
+    }
+    
+    getNumberElection() {
+        return this.numberElection
+    }
+    
 }

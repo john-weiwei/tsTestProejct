@@ -5,7 +5,7 @@ import { StatusEnum } from "../enum/StatusEnum"
 // userId!: string 用户ID
 // status!: StatusEnum  选举状态
 // votes!: number 票数
-// isNew!: number 是否最新候选信息
+// numberElection!: number 选举批次
 // createTime!: Date 创建时间
 // updateTime!: Date 更新时间
 export class Candidata {
@@ -13,7 +13,7 @@ export class Candidata {
     userId!: string
     status!: StatusEnum
     votes!: number
-    isNew!: number
+    numberElection!: number
     createTime!: Date
     updateTime!: Date
 
@@ -53,12 +53,12 @@ export class Candidata {
         return this.votes
     }
     
-    setIsNew(isNew: number) {
-        this.isNew = isNew
+    setNumberElection(numberElection: number) {
+        this.numberElection = numberElection
     }
     
-    getIsNew() {
-        return this.isNew
+    getNumberElection() {
+        return this.numberElection
     }
     
     setCreateTime(createTime: Date) {

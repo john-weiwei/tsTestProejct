@@ -77,6 +77,17 @@ export class RedisUtil {
     })
   }
 
+  async incr(key: any) {
+    return new Promise((resolve, reject) => {
+      this.redisClient.incr(key, (err: any, result: any) => {
+        if (err) {
+          reject(false);
+        }
+        resolve(result);
+      })
+    })
+  }
+
   async remove(key: any) {
     return new Promise((resolve, reject) => {
       this.redisClient.del(key, (err: any, result: any) => {
